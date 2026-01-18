@@ -2,6 +2,26 @@
     "version": 2,
     "framework": "laravel",
     "regions": ["sin1"],
+    "builds": [
+        {
+            "src": "public/index.php",
+            "use": "vercel-php@0.7.2"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/(css|js|images|favicon.ico|robots.txt)(.*)",
+            "dest": "/public/$1$2"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/index.php"
+        }
+    ],
     "env": {
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
