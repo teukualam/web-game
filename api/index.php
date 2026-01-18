@@ -1,7 +1,7 @@
 <?php
 
-// Jalankan pembersihan cache saat pertama kali diakses di server Vercel
-exec('php ../artisan config:cache');
-exec('php ../artisan view:cache');
+// Paksa Laravel menggunakan folder /tmp untuk menyimpan view yang terkompilasi
+putenv('VIEW_COMPILED_PATH=/tmp');
 
+// Impor file index Laravel yang asli
 require __DIR__ . '/../public/index.php';

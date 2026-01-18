@@ -25,7 +25,6 @@
     "VIEW_COMPILED_PATH": "/tmp",
     "CACHE_STORE": "array",
     "SESSION_DRIVER": "cookie",
-    "LOG_CHANNEL": "stderr",
-    "DB_CONNECTION": "pgsql"
+    "LOG_CHANNEL": "stderr"
   }
 }
