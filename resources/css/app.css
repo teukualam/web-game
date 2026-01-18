@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* KONFIGURASI TEMA BIRU FINTECH */
+:root {
+    --primary-blue: #0ea5e9;
+    --dark-bg: #030712;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Mengubah semua aksen oranye yang mungkin masih ada di class Tailwind */
+.bg-orange-500, .bg-orange-600 { background-color: var(--primary-blue) !important; }
+.text-orange-500, .text-orange-600 { color: var(--primary-blue) !important; }
+.border-orange-500, .border-orange-600 { border-color: var(--primary-blue) !important; }
+
+/* Gradien Teks Utama (Bukan Oranye/Ungu lagi) */
+.text-gradient-blue {
+    background: linear-gradient(to right, #0ea5e9, #22d3ee, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Efek Cahaya Biru (Glow) */
+.text-glow-blue {
+    text-shadow: 0 0 40px rgba(14, 165, 233, 0.6);
+}
+
+/* Tombol Bulat FinTech */
+.btn-primary-blue {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 9999px;
+    font-weight: 800;
+    transition: all 0.3s;
+    box-shadow: 0 10px 20px -10px rgba(14, 165, 233, 0.5);
+}
+
+.btn-primary-blue:hover {
+    background-color: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -10px rgba(14, 165, 233, 0.6);
+}
+
+/* Efek Blur Latar Belakang */
+.bg-blue-blur {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(14, 165, 233, 0.1);
+    filter: blur(120px);
+    border-radius: 50%;
+    z-index: -1;
+}
