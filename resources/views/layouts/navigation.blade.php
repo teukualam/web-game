@@ -2,16 +2,14 @@
     $cartCount = Auth::check() ? \App\Models\CartItem::where('user_id', Auth::id())->count() : 0; 
 @endphp
 
-{{-- Navigasi Utama --}}
 <nav x-data="{ openProfile: false, openMessages: false }" 
      class="bg-white dark:bg-gray-950 border-b border-blue-600 dark:border-gray-800 sticky top-0 z-[100] transition-colors duration-300 shadow-sm px-4">
     
     <div class="max-w-7xl mx-auto">
         <div class="flex items-center justify-between py-4 gap-4 md:gap-8">
             
-            {{-- LOGO (Sisi Kiri) --}}
+            {{-- LOGO --}}
             <div class="shrink-0">
-                {{-- LOGIC: Jika admin, klik logo ke panel filament. Jika user, ke dashboard --}}
                 <a href="{{ Auth::check() && Auth::user()->usertype === 'admin' ? url('/admin') : route('dashboard') }}" class="flex items-center gap-2 group">
                     <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
@@ -34,52 +32,33 @@
                 </form>
             </div>
 
-            {{-- ACTIONS (Sisi Kanan) --}}
+            {{-- ACTIONS --}}
             <div class="flex items-center gap-2 md:gap-4 shrink-0">
-                
-                {{-- Toggle Tema --}}
-                <button @click="darkMode = !darkMode" class="p-2 md:p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-105 transition-all focus:outline-none">
+                <button @click="darkMode = !darkMode" class="p-2 md:p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:scale-105 transition-all">
                     <span x-show="!darkMode">🌙</span>
                     <span x-show="darkMode">☀️</span>
                 </button>
 
-                {{-- AREA PESAN --}}
+                {{-- PESAN --}}
                 <div class="relative">
-                    <button @click="openMessages = !openMessages; openProfile = false" 
-                            class="relative p-2 md:p-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors focus:outline-none">
+                    <button @click="openMessages = !openMessages; openProfile = false" class="relative p-2 md:p-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
                         </svg>
                         <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-950"></span>
                     </button>
-
                     {{-- Dropdown Pesan --}}
-                    <div x-show="openMessages" 
-                         @click.away="openMessages = false"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 scale-95 translate-y-2"
-                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                         style="display: none;"
-                         class="absolute right-0 mt-3 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl z-[150] overflow-hidden">
-                        
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-blue-600 text-white">
-                            <h3 class="font-bold text-sm">Notifikasi Pesanan</h3>
+                    <div x-show="openMessages" @click.away="openMessages = false" style="display: none;" class="absolute right-0 mt-3 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl z-[150] overflow-hidden">
+                        <div class="px-4 py-3 bg-blue-600 text-white font-bold text-sm">Notifikasi Pesanan</div>
+                        <div class="p-4 border-b border-gray-50 dark:border-gray-700/50">
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400">Klik "Lihat Semua" untuk melihat rincian CD-Key Anda.</p>
                         </div>
-                        
-                        <div class="max-h-64 overflow-y-auto">
-                            <div class="p-4 border-b border-gray-50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors cursor-pointer">
-                                <p class="text-[11px] text-gray-500 dark:text-gray-400">Klik "Lihat Semua" untuk melihat rincian CD-Key Anda.</p>
-                            </div>
-                        </div>
-
-                        <a href="{{ route('pesan.index') }}" class="block w-full text-center py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 transition-colors bg-gray-50/50 dark:bg-gray-900/50">
-                            Lihat Semua Pesan
-                        </a>
+                        <a href="{{ route('pesan.index') }}" class="block w-full text-center py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 bg-gray-50/50 dark:bg-gray-900/50">Lihat Semua Pesan</a>
                     </div>
                 </div>
 
-                {{-- Cart --}}
-                <a href="{{ route('cart.index') }}" class="relative p-2 md:p-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors focus:outline-none">
+                {{-- CART --}}
+                <a href="{{ route('cart.index') }}" class="relative p-2 md:p-2.5 text-gray-600 dark:text-gray-300 hover:text-blue-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                     @if($cartCount > 0)
                         <span class="absolute top-1 right-1 bg-blue-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full border-2 border-white dark:border-gray-950">{{ $cartCount }}</span>
@@ -87,30 +66,23 @@
                 </a>
 
                 @auth
-                    {{-- DROPDOWN PROFIL --}}
+                    {{-- PROFIL --}}
                     <div class="relative flex items-center gap-3 pl-2 md:pl-4 border-l border-gray-200 dark:border-gray-800">
-                        <button @click="openProfile = !openProfile; openMessages = false" 
-                                class="flex items-center gap-3 focus:outline-none group">
+                        <button @click="openProfile = !openProfile; openMessages = false" class="flex items-center gap-3 focus:outline-none group">
                             <span class="hidden lg:block text-sm font-bold text-gray-700 dark:text-gray-200 italic truncate max-w-[100px] group-hover:text-blue-600 transition-colors">
                                 {{ Auth::user()->name }}
                             </span>
-                            <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:ring-2 group-hover:ring-blue-500/50 transition-all uppercase">
+                            <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md uppercase">
                                 {{ substr(Auth::user()->name, 0, 1) }}
                             </div>
                         </button>
 
-                        <div x-show="openProfile" 
-                             @click.away="openProfile = false"
-                             x-transition:enter="transition ease-out duration-200"
-                             style="display: none;"
-                             class="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl z-[150] overflow-hidden">
-                            
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                        <div x-show="openProfile" @click.away="openProfile = false" style="display: none;" class="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl z-[150] overflow-hidden">
+                            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Role: <span class="uppercase font-bold text-blue-600">{{ Auth::user()->usertype }}</span></p>
                                 <p class="text-sm font-bold dark:text-white truncate">{{ Auth::user()->email }}</p>
                             </div>
 
-                            {{-- Menu Khusus Admin --}}
                             @if(Auth::user()->usertype === 'admin')
                                 <a href="{{ url('/admin') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all border-b border-gray-100 dark:border-gray-700">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>

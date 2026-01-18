@@ -14,9 +14,9 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@game.com'], // Kunci pencarian (agar tidak duplikat)
+            ['email' => 'teukualamfaziansyah@gmail.com'], // Kunci pencarian (agar tidak duplikat)
             [
-                'name' => 'Super Admin',
+                'name' => 'Admin Fazynsyy',
                 'password' => Hash::make('password'), // Ganti password sesuai keinginan
                 'usertype' => 'admin', // PENTING: Ini kunci akses Filament
                 'email_verified_at' => now(),

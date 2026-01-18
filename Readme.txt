@@ -117,3 +117,5 @@ composer install
 A: Pastikan data di database sudah ter-import dengan benar. Gunakan email/password yang sudah ada di database hasil import tadi.
 
 Selamat berbagi project\! 🎉
+
+Ngoding harian = npm run dev + php artisan serve. Selesai dan ingin pamer = git push origin main. (Lalu duduk manis lihat Vercel berubah jadi Hijau/Ready).

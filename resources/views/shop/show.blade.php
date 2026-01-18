@@ -1,4 +1,20 @@
 <x-app-layout>
+    {{-- CSS Tambahan untuk Lenis agar tidak ada lag saat scroll --}}
+    <style>
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+    </style>
+
     @php
         srand($game->id); 
         $persenDiskon = rand(10, 30); 
@@ -18,10 +34,12 @@
             <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
                 <div class="grid grid-cols-1 lg:grid-cols-12">
                     
+                    {{-- Bagian Gambar --}}
                     <div class="lg:col-span-5 bg-gray-100 dark:bg-gray-800/50 p-10 flex items-center justify-center">
                         <div class="relative w-full aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-                            <img src="{{ asset('storage/' . $game->cover_image) }}" 
-                                 class="w-full h-full object-cover" 
+                            {{-- Perbaikan Path Gambar: asset() bukan storage/ --}}
+                            <img src="{{ asset($game->cover_image) }}" 
+                                 class="w-full h-full object-cover transform hover:scale-105 transition duration-700" 
                                  alt="{{ $game->name }}">
                             
                             <div class="absolute top-4 left-4">
@@ -32,6 +50,7 @@
                         </div>
                     </div>
 
+                    {{-- Bagian Detail --}}
                     <div class="lg:col-span-7 p-8 lg:p-12 flex flex-col">
                         <div class="mb-6">
                             <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter italic uppercase mb-2">
@@ -80,4 +99,27 @@
             </div>
         </div>
     </div>
+
+    {{-- SCRIPTS: Memanggil Lenis untuk Smooth Scroll --}}
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script> 
+    <script>
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+    </script>
 </x-app-layout>

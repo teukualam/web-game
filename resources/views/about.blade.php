@@ -1,4 +1,20 @@
 <x-app-layout>
+    {{-- CSS Tambahan untuk Lenis agar tidak ada lag saat scroll --}}
+    <style>
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+    </style>
+
     <div class="py-8 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -45,21 +61,21 @@
             {{-- Keunggulan --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-left">
                 {{-- Card 1 --}}
-                <div class="bg-blue-600 p-8 rounded-[2rem] text-white shadow-lg shadow-blue-500/20 transform hover:-translate-y-2 transition duration-300">
+                <div class="bg-blue-600 p-8 rounded-[2rem] text-white shadow-lg shadow-blue-500/20 transform hover:-translate-y-2 transition duration-500">
                     <i class="fas fa-bolt text-4xl mb-6"></i>
                     <h3 class="font-black text-xl mb-3 italic uppercase tracking-tighter text-left">PROSES KILAT</h3>
                     <p class="text-blue-100 text-sm leading-relaxed">Pesanan Anda dikirimkan secara otomatis dalam hitungan detik setelah pembayaran terverifikasi.</p>
                 </div>
                 
                 {{-- Card 2 --}}
-                <div class="bg-gray-900 dark:bg-blue-900/40 p-8 rounded-[2rem] text-white border border-blue-500/30 shadow-lg transform hover:-translate-y-2 transition duration-300">
+                <div class="bg-gray-900 dark:bg-blue-900/40 p-8 rounded-[2rem] text-white border border-blue-500/30 shadow-lg transform hover:-translate-y-2 transition duration-500">
                     <i class="fas fa-shield-alt text-4xl mb-6 text-blue-400"></i>
                     <h3 class="font-black text-xl mb-3 italic uppercase tracking-tighter text-blue-400 text-left">100% AMAN</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Kami menjamin keamanan data game Anda karena kami hanya menggunakan jalur distribusi resmi dan legal.</p>
                 </div>
 
                 {{-- Card 3 --}}
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] text-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 shadow-xl transform hover:-translate-y-2 transition duration-300">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] text-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 shadow-xl transform hover:-translate-y-2 transition duration-500">
                     <i class="fas fa-headset text-4xl mb-6 text-blue-600"></i>
                     <h3 class="font-black text-xl mb-3 italic uppercase tracking-tighter text-left">SUPPORT ADMIN</h3>
                     <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Tim bantuan kami siap melayani Anda setiap hari untuk memastikan pengalaman belanja terbaik.</p>
@@ -86,4 +102,35 @@
 
         </div>
     </div>
+
+    {{-- SCRIPTS: Memanggil Lenis untuk Smooth Scroll di Halaman About --}}
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script> 
+    <script>
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+
+        // Sedikit script agar link anchor tetap bekerja mulus
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                lenis.scrollTo(this.getAttribute('href'))
+            });
+        });
+    </script>
 </x-app-layout>

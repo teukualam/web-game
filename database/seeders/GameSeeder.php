@@ -9,11 +9,11 @@ class GameSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Bersihkan data lama
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('games')->truncate();
-        DB::table('categories')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // 1. Bersihkan data lama (Versi PostgreSQL)
+        // PostgreSQL tidak mengenal FOREIGN_KEY_CHECKS=0. 
+        // Kita gunakan delete() agar lebih aman lintas database.
+        DB::table('games')->delete();
+        DB::table('categories')->delete();
 
         // 2. Buat Kategori
         $categoryId = DB::table('categories')->insertGetId([
@@ -25,7 +25,6 @@ class GameSeeder extends Seeder
 
         // 3. Masukkan data game (Total 11 Game)
         $games = [
-            // Game Lama
             [
                 'name' => 'Elden Ring',
                 'price' => 599000,
@@ -68,7 +67,6 @@ class GameSeeder extends Seeder
                 'cover_image' => 'assets/warzone.png',
                 'category_id' => $categoryId,
             ],
-            // Game Baru (Berdasarkan image_6f3209.png)
             [
                 'name' => 'The Last of Us Part II Remastered',
                 'price' => 729000,

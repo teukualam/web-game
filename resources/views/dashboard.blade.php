@@ -1,4 +1,23 @@
 <x-app-layout>
+    {{-- CSS Tambahan untuk Lenis agar tidak ada lag saat scroll --}}
+    <style>
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+    </style>
+
     <div class="py-6 md:py-10 bg-gray-50 dark:bg-gray-950 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -33,15 +52,14 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                     @foreach($games as $game_item)
-                        <div class="group relative flex flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-blue-500">
+                        <div class="group relative flex flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-blue-500">
                             
                             {{-- Image Container --}}
                             <div class="aspect-[3/4] w-full overflow-hidden bg-gray-200 dark:bg-gray-800">
                                 @if($game_item->cover_image)
-                                    {{-- Coba ganti bagian <img> King dengan ini --}}
-<img src="{{ asset($game_item->cover_image) }}" 
-     alt="{{ $game_item->name }}"
-     class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                    <img src="{{ asset($game_item->cover_image) }}" 
+                                         alt="{{ $game_item->name }}"
+                                         class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs italic">No Image</div>
                                 @endif
@@ -68,4 +86,27 @@
 
         </div>
     </div>
+
+    {{-- SCRIPTS: Memanggil Lenis untuk Smooth Scroll --}}
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script> 
+    <script>
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+    </script>
 </x-app-layout>

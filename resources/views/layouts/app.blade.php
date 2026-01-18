@@ -36,16 +36,14 @@
 
             {{-- MAIN CONTENT --}}
             <main class="flex-grow">
-                {{-- Mendukung gaya @extends('layouts.app') --}}
                 @yield('content')
 
-                {{-- Mendukung gaya <x-app-layout> --}}
                 @if(isset($slot))
                     {{ $slot }}
                 @endif
             </main>
 
-            {{-- FOOTER (Sekarang dipisah ke file tersendiri) --}}
+            {{-- FOOTER --}}
             @include('layouts.footer')
             
         </div>
